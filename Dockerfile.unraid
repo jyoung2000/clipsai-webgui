@@ -1,0 +1,59 @@
+# ClipsAI Web GUI Docker Container for Unraid 7.1.3
+FROM python:3.11-slim
+
+# Set container metadata
+LABEL maintainer="ClipsAI Web GUI"
+LABEL description="ClipsAI Web Interface with upload and token validation"
+LABEL version="3.0.0"
+
+# Environment variables for Unraid compatibility
+ENV PUID=99
+ENV PGID=100
+ENV UMASK=022
+ENV TZ=UTC
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Install system dependencies and create user structure for Unraid
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    ffmpeg \
+    gosu \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Create nobody user and group (standard for Unraid)
+RUN groupadd -g 100 users && \
+    useradd -u 99 -g 100 -d /app -s /bin/bash nobody
+
+# Set up application directory
+WORKDIR /app
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY final_working_server.py .
+COPY entrypoint.sh .
+
+# Create necessary directories with proper permissions
+RUN mkdir -p /app/uploads /app/logs /config /data && \
+    chmod +x entrypoint.sh && \
+    chown -R nobody:users /app /config /data
+
+# Create volume mount points
+VOLUME ["/config", "/data", "/app/uploads"]
+
+# Expose port
+EXPOSE 8501
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8501/api/status || exit 1
+
+# Use entrypoint script for proper Unraid user handling
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["python3", "final_working_server.py"]

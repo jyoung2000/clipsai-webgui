@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  clipsai-webgui:
+    build:
+      context: .
+      dockerfile: Dockerfile.unraid
+    container_name: clipsai-webgui
+    restart: unless-stopped
+    
+    # Unraid-compatible environment variables
+    environment:
+      - PUID=99          # Default Unraid user ID (nobody)
+      - PGID=100         # Default Unraid group ID (users)
+      - UMASK=022        # Default permissions
+      - TZ=America/New_York  # Set your timezone
+    
+    # Port mapping
+    ports:
+      - "8501:8501"      # Web interface
+    
+    # Volume mappings for Unraid
+    volumes:
+      # Config storage (persistent)
+      - /mnt/user/appdata/clipsai:/config
+      
+      # User data and videos (persistent)
+      - /mnt/user/data/clipsai:/data
+      
+      # Temporary uploads (can be tmpfs for performance)
+      - /mnt/user/appdata/clipsai/uploads:/app/uploads
+      
+      # Optional: Logs (for debugging)
+      - /mnt/user/appdata/clipsai/logs:/app/logs
+    
+    # Resource limits (adjust based on your Unraid system)
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Network mode (bridge is standard for Unraid)
+    network_mode: bridge
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Labels for Unraid template
+    labels:
+      - "net.unraid.docker.managed=dockerman"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8501]"
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/ClipsAI/clipsai/main/assets/logo.png"

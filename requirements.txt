@@ -1,0 +1,49 @@
+# Core Streamlit
+streamlit>=1.28.0
+
+# ClipsAI Dependencies (from setup.py)
+av
+facenet-pytorch
+matplotlib
+mediapipe
+nltk
+numpy
+opencv-python
+pandas
+psutil
+pyannote.audio
+pyannote.core
+pynvml
+python-magic
+scenedetect
+scikit-learn
+sentence-transformers
+scipy
+torch
+
+# WhisperX (must be installed from git)
+# Install separately with: pip install whisperx@git+https://github.com/m-bain/whisperx.git
+
+# ClipsAI itself (install from git)
+# Install separately with: pip install git+https://github.com/ClipsAI/clipsai.git
+
+# Additional dependencies for web interface
+tempfile  # Built-in, no installation needed
+shutil    # Built-in, no installation needed
+
+# System Requirements (install manually):
+# - ffmpeg: Required for video processing
+#   Ubuntu/Debian: apt-get install ffmpeg
+#   macOS: brew install ffmpeg
+#   Windows: Download from https://ffmpeg.org/
+#
+# - libmagic: Required for file type detection
+#   Ubuntu/Debian: apt-get install libmagic1
+#   macOS: brew install libmagic
+#   Windows: See python-magic documentation
+
+# Installation Instructions:
+# 1. Install system dependencies (ffmpeg, libmagic)
+# 2. pip install -r requirements.txt
+# 3. pip install whisperx@git+https://github.com/m-bain/whisperx.git
+# 4. pip install git+https://github.com/ClipsAI/clipsai.git

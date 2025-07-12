@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>ClipsAI-WebGUI</Name>
+  <Repository>clipsai/webgui:latest</Repository>
+  <Registry>https://hub.docker.com/</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/ClipsAI/clipsai</Support>
+  <Project>https://github.com/ClipsAI/clipsai</Project>
+  <Overview>ClipsAI Web GUI - AI-powered video transcription, clip finding, and intelligent resizing with a modern web interface. Features include file upload, Hugging Face token validation, and complete video processing workflow.</Overview>
+  <Category>MediaApp:Video</Category>
+  <WebUI>http://[IP]:[PORT:8501]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/ClipsAI/clipsai/main/unraid-template.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/ClipsAI/clipsai/main/assets/logo.png</Icon>
+  <ExtraParams>--security-opt no-new-privileges:true</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1752344000</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="WebUI Port" Target="8501" Default="8501" Mode="tcp" Description="Port for the web interface" Type="Port" Display="always" Required="true" Mask="false">8501</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID for file permissions (usually 99 for Unraid)" Type="Variable" Display="always" Required="true" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID for file permissions (usually 100 for Unraid)" Type="Variable" Display="always" Required="true" Mask="false">100</Config>
+  <Config Name="UMASK" Target="UMASK" Default="022" Mode="" Description="File permission mask" Type="Variable" Display="advanced" Required="false" Mask="false">022</Config>
+  <Config Name="TZ" Target="TZ" Default="America/New_York" Mode="" Description="Timezone (e.g., America/New_York, Europe/London)" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
+  <Config Name="Config Directory" Target="/config" Default="/mnt/user/appdata/clipsai" Mode="rw" Description="Directory for configuration files and persistent data" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/clipsai</Config>
+  <Config Name="Data Directory" Target="/data" Default="/mnt/user/data/clipsai" Mode="rw" Description="Directory for user videos and processed files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/data/clipsai</Config>
+  <Config Name="Uploads Directory" Target="/app/uploads" Default="/mnt/user/appdata/clipsai/uploads" Mode="rw" Description="Temporary directory for file uploads" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/clipsai/uploads</Config>
+  <Config Name="Logs Directory" Target="/app/logs" Default="/mnt/user/appdata/clipsai/logs" Mode="rw" Description="Directory for application logs (optional)" Type="Path" Display="advanced" Required="false" Mask="false">/mnt/user/appdata/clipsai/logs</Config>
+  <Config Name="Memory Limit" Target="" Default="2G" Mode="" Description="Maximum memory usage (e.g., 2G, 4G)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="CPU Limit" Target="" Default="1.0" Mode="" Description="Maximum CPU usage (e.g., 0.5, 1.0, 2.0)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+</Container>

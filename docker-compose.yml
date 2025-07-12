@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  clipsai-webgui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clipsai-webgui
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - PUID=99          # Default Unraid user ID (nobody)
+      - PGID=100         # Default Unraid group ID (users)
+      - UMASK=022        # Default permissions
+      - TZ=America/New_York  # Set your timezone
+      - PORT=5555        # Web server port
+    
+    # Port mapping
+    ports:
+      - "5555:5555"      # Web interface
+    
+    # Volume mappings
+    volumes:
+      # Config storage (persistent)
+      - ./config:/config
+      
+      # User data and videos (persistent)
+      - ./data:/data
+      
+      # Temporary uploads
+      - ./uploads:/app/uploads
+      
+      # Logs
+      - ./logs:/app/logs
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
